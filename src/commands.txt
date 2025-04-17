@@ -1,7 +1,11 @@
  "git init"
 "git status"
 "git add src/commands.txt"
-"git commit (1)"
+"git commit"
 "git log"
 "git add scr/"
 "git add MoneyAcceptor"
+"git commit"
+"git log"
+"git commit"
+
