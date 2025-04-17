@@ -8,4 +8,8 @@
 "git commit"
 "git log"
 "git commit"
+"git merge"
+"git push"
+
+
 
