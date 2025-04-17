@@ -4,3 +4,4 @@
 "git commit (1)"
 "git log"
 "git add scr/"
+"git add MoneyAcceptor"
