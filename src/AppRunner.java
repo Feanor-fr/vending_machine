@@ -1,5 +1,6 @@
 import enums.ActionLetter;
 import model.*;
+import util.MoneyAcceptor;
 import util.UniversalArray;
 import util.UniversalArrayImpl;
 
@@ -9,11 +10,13 @@ public class AppRunner {
 
     private final UniversalArray<Product> products = new UniversalArrayImpl<>();
 
-    private final CoinAcceptor coinAcceptor;
+    private final MoneyAcceptor moneyAcceptor;
 
     private static boolean isExit = false;
 
-    private AppRunner() {
+    private AppRunner(MoneyAcceptor moneyAcceptor) {
+        this.moneyAcceptor = moneyAcceptor;
+
         products.addAll(new Product[]{
                 new Water(ActionLetter.B, 20),
                 new CocaCola(ActionLetter.C, 50),
@@ -22,11 +25,10 @@ public class AppRunner {
                 new Mars(ActionLetter.F, 80),
                 new Pistachios(ActionLetter.G, 130)
         });
-        coinAcceptor = new CoinAcceptor(100);
     }
 
-    public static void run() {
-        AppRunner app = new AppRunner();
+    public static void run(MoneyAcceptor moneyAcceptor) {
+        AppRunner app = new AppRunner(moneyAcceptor);
         while (!isExit) {
             app.startSimulation();
         }
@@ -36,7 +38,8 @@ public class AppRunner {
         print("В автомате доступны:");
         showProducts(products);
 
-        print("Монет на сумму: " + coinAcceptor.getAmount());
+        print("Монет на сумму: " + moneyAcceptor.getAmount());
+        print("a - Пополнить баланс на (25)");
 
         UniversalArray<Product> allowProducts = new UniversalArrayImpl<>();
         allowProducts.addAll(getAllowedProducts().toArray());
@@ -47,7 +50,7 @@ public class AppRunner {
     private UniversalArray<Product> getAllowedProducts() {
         UniversalArray<Product> allowProducts = new UniversalArrayImpl<>();
         for (int i = 0; i < products.size(); i++) {
-            if (coinAcceptor.getAmount() >= products.get(i).getPrice()) {
+            if (moneyAcceptor.getAmount() >= products.get(i).getPrice()) {
                 allowProducts.add(products.get(i));
             }
         }
@@ -58,10 +61,17 @@ public class AppRunner {
         showActions(products);
         print(" h - Выйти");
         String action = fromConsole().substring(0, 1);
+        if("a".equalsIgnoreCase(action)) {
+            if(moneyAcceptor.acceptBalance()) {
+                print("Баланс пополнен!" + moneyAcceptor.getAmount());
+            } else {
+                print("Ошибка!");
+            }
+        }
         try {
             for (int i = 0; i < products.size(); i++) {
                 if (products.get(i).getActionLetter().equals(ActionLetter.valueOf(action.toUpperCase()))) {
-                    coinAcceptor.setAmount(coinAcceptor.getAmount() - products.get(i).getPrice());
+                    moneyAcceptor.setAmount(moneyAcceptor.getAmount() - products.get(i).getPrice());
                     print("Вы купили " + products.get(i).getName());
                     break;
                 } else if ("h".equalsIgnoreCase(action)) {
