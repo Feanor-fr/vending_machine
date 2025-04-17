@@ -18,7 +18,7 @@ public class CoinAcceptor implements MoneyAcceptor {
     @Override
     public boolean acceptBalance() {
         amount += 25;
-        System.out.println("Текущий баланс" + amount);
+        System.out.println("Текущий баланс : " + amount);
         return true;
     }
 

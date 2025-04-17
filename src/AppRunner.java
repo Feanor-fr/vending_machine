@@ -63,7 +63,7 @@ public class AppRunner {
         String action = fromConsole().substring(0, 1);
         if("a".equalsIgnoreCase(action)) {
             if(moneyAcceptor.acceptBalance()) {
-                print("Баланс пополнен!" + moneyAcceptor.getAmount());
+                print("Баланс пополнен! ");
             } else {
                 print("Ошибка!");
             }
